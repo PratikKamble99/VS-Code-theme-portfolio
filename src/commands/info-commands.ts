@@ -36,7 +36,7 @@ export const aboutCommand: Command = {
 👤 ${name}
 💼 ${title}
 
-${summary.join('\n\n')}
+${summary}
 
 Type 'goto about' to see the full about section.
 `;

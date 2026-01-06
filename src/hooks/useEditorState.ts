@@ -37,7 +37,7 @@ export const about: AboutInfo = {
   name: "${portfolioData.about.name}",
   title: "${portfolioData.about.title}",
   summary: [
-${portfolioData.about.summary.map(line => `    "${line}"`).join(',\n')}
+    "${portfolioData.about.summary}"
   ]
 };
 
