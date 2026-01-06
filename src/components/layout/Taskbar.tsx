@@ -126,7 +126,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({
         )}
 
         {/* Theme Toggle Button */}
-        <motion.button
+        {/* <motion.button
           onClick={toggleTheme}
           className="flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200 hover:bg-[var(--color-bgTertiary)]"
           whileHover={{ scale: 1.05 }}
@@ -154,7 +154,7 @@ export const Taskbar: React.FC<TaskbarProps> = ({
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           )}
-        </motion.button>
+        </motion.button> */}
       </div>
 
       {/* Responsive styles - hide taskbar on mobile */}

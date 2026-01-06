@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, usePathname } from 'next/navigation';
-import { Sidebar, Taskbar } from '@/components/layout';
+import { Sidebar, Taskbar, SectionTabBar } from '@/components/layout';
 import { TerminalPanel } from '@/components/terminal';
-import { OnboardingSteps } from '@/components/ui';
-import { useFullscreen, useGuideState } from '@/hooks';
+import { OnboardingSteps, LoadingBar } from '@/components/ui';
+import { useFullscreen, useGuideState, useVisitedSections } from '@/hooks';
 import { ThemeProvider, TerminalProvider } from '@/contexts';
 import { AnimationProvider } from '@/components/providers';
 
@@ -49,6 +49,9 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
   // Use guide hook for auto-showing onboarding on first visit
   const { isVisible: isGuideVisible, showGuide, dismissGuide } = useGuideState();
 
+  // Use visited sections hook for tab bar
+  const { visitedSections, addVisitedSection, removeVisitedSection } = useVisitedSections();
+
   // Fullscreen state management using custom hook
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
@@ -57,6 +60,9 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
 
   // Track mobile state for responsive behavior
   const [isMobile, setIsMobile] = useState(false);
+
+  // Ref for debouncing navigation
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Handle responsive behavior on mount and resize
   useEffect(() => {
@@ -82,17 +88,63 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Track current section in visited sections
+  // Requirement 1.2: Add section to visited list on navigation
+  useEffect(() => {
+    if (currentSection && mounted) {
+      addVisitedSection(currentSection);
+    }
+  }, [currentSection, mounted, addVisitedSection]);
+
   /**
    * Navigation handler - updates current section using Next.js router
+   * Implements debouncing to prevent rapid navigation (100ms)
+   * Requirement 2.1: Navigate to section on tab click
+   * Requirement 2.4: Handle active tab clicks without errors
    */
-  const handleNavigate = (section: string) => {
-    router.push(`/${section}`);
-
-    // Auto-collapse sidebar on mobile after navigation
-    if (window.innerWidth < 768) {
-      setIsSidebarCollapsed(true);
+  const handleNavigate = useCallback((section: string) => {
+    // Clear any pending navigation
+    if (navigationTimeoutRef.current) {
+      clearTimeout(navigationTimeoutRef.current);
     }
-  };
+
+    // Debounce navigation to prevent rapid clicks
+    navigationTimeoutRef.current = setTimeout(() => {
+      // Don't navigate if already on the section (idempotent)
+      // Requirement 2.4: Active tab click maintains current view
+      if (section === currentSection) {
+        return;
+      }
+
+      router.push(`/${section}`);
+
+      // Auto-collapse sidebar on mobile after navigation
+      if (window.innerWidth < 768) {
+        setIsSidebarCollapsed(true);
+      }
+    }, 100);
+  }, [router, currentSection]);
+
+  // Cleanup navigation timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  /**
+   * Handle tab close - remove from visited sections and navigate if needed
+   */
+  const handleTabClose = useCallback((section: string) => {
+    const navigateTo = removeVisitedSection(section, currentSection);
+    
+    // If we closed the active tab, navigate to the suggested section
+    if (navigateTo) {
+      handleNavigate(navigateTo);
+    }
+  }, [removeVisitedSection, currentSection, handleNavigate]);
 
   /**
    * Toggle sidebar visibility (primarily for mobile)
@@ -190,6 +242,9 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
               fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace"
             }}
           >
+            {/* Loading Bar */}
+            <LoadingBar />
+
             {/* Taskbar with window controls */}
             <Taskbar
               onClose={handleCloseTerminal}
@@ -257,6 +312,14 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
 
               {/* Main Content Area with Terminal */}
               <div className="flex-1 flex flex-col relative overflow-hidden">
+                {/* Section Tab Bar - At top of content panel */}
+                <SectionTabBar
+                  visitedSections={visitedSections}
+                  activeSection={currentSection}
+                  onTabClick={handleNavigate}
+                  onTabClose={handleTabClose}
+                />
+
                 <div
                   className="flex-1 transition-all duration-300 ease-in-out overflow-auto"
                   style={{
