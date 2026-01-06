@@ -199,13 +199,9 @@ export const guideCommand: Command = {
   aliases: ['tutorial', 'help-guide'],
   
   execute: async (_args, context) => {
-    console.log('[guideCommand] Executing guide command');
-    console.log('[guideCommand] context:', context);
-    console.log('[guideCommand] context.showGuide:', context?.showGuide);
-    
+   
     // Trigger guide display through context callback
     if (context?.showGuide) {
-      console.log('[guideCommand] Calling showGuide()');
       context.showGuide();
       
       return {
@@ -216,7 +212,6 @@ export const guideCommand: Command = {
       };
     } else {
       // Fallback if showGuide callback is not available
-      console.log('[guideCommand] showGuide not available in context');
       return {
         success: false,
         output: 'Guide is not available. Please refresh the page and try again.',

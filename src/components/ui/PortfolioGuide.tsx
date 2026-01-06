@@ -22,14 +22,12 @@ interface PortfolioGuideProps {
  * Requirements: 1.2, 1.3, 1.4, 2.1, 2.3, 4.1, 4.2, 4.3, 4.4, 4.5, 5.1, 5.2, 5.3
  */
 export const PortfolioGuide: React.FC<PortfolioGuideProps> = ({ isVisible, onClose }) => {
-  console.log('[PortfolioGuide] Rendered with isVisible:', isVisible);
   
   // Handle Escape key to close guide
   // Requirement 2.3: Dismiss guide with Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isVisible) {
-        console.log('[PortfolioGuide] Escape key pressed, closing guide');
         onClose();
       }
     };

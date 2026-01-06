@@ -31,31 +31,22 @@ export function useGuideState(): UseGuideStateReturn {
   // Track if storage is available
   const [isStorageSupported] = useState<boolean>(isStorageAvailable());
 
-  console.log('[useGuideState] Hook initialized');
-  console.log('[useGuideState] isVisible:', isVisible);
-  console.log('[useGuideState] hasBeenDismissed:', hasBeenDismissed);
-
   // Load dismissal state from storage on mount
   // Requirement 1.5: Do not display guide if previously dismissed
   useEffect(() => {
-    console.log('[useGuideState] useEffect running');
     const dismissed = loadGuideDismissed();
-    console.log('[useGuideState] Loaded dismissed state:', dismissed);
     setHasBeenDismissed(dismissed);
     
     // Show guide on first visit (if not dismissed)
     // Requirement 1.1: Display guide on first visit
     if (!dismissed) {
-      console.log('[useGuideState] Guide not dismissed, will show in 500ms');
       // Small delay to ensure layout is ready
       const timer = setTimeout(() => {
-        console.log('[useGuideState] Setting isVisible to true');
         setIsVisible(true);
       }, 500);
       
       return () => clearTimeout(timer);
     } else {
-      console.log('[useGuideState] Guide was dismissed, not showing');
     }
   }, []);
 
@@ -64,7 +55,6 @@ export function useGuideState(): UseGuideStateReturn {
    * Can be called manually via command or programmatically
    */
   const showGuide = useCallback(() => {
-    console.log('[useGuideState] showGuide called');
     setIsVisible(true);
   }, []);
 
@@ -73,7 +63,6 @@ export function useGuideState(): UseGuideStateReturn {
    * Useful for temporary hiding
    */
   const hideGuide = useCallback(() => {
-    console.log('[useGuideState] hideGuide called');
     setIsVisible(false);
   }, []);
 
@@ -83,7 +72,6 @@ export function useGuideState(): UseGuideStateReturn {
    * Requirement 2.4: Persist dismissal state
    */
   const dismissGuide = useCallback(() => {
-    console.log('[useGuideState] dismissGuide called');
     setIsVisible(false);
     setHasBeenDismissed(true);
     saveGuideDismissed(true);
