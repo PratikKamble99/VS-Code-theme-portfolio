@@ -1,120 +1,68 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface UseTypewriterOptions {
   text: string;
   speed?: number;
   delay?: number;
-  variableSpeed?: boolean;
-  onComplete?: () => void;
+  enabled?: boolean;
 }
 
-export function useTypewriter({ 
-  text, 
-  speed = 50, 
-  delay = 0, 
-  variableSpeed = false,
-  onComplete 
-}: UseTypewriterOptions) {
-  const [displayText, setDisplayText] = useState('');
-  const [isComplete, setIsComplete] = useState(false);
-
-  // Calculate realistic typing speed with variations
-  const getTypingSpeed = useCallback((char: string, index: number): number => {
-    if (!variableSpeed) return speed;
-
-    let baseSpeed = speed;
-    
-    // Slower for punctuation and special characters
-    if (/[.!?;:]/.test(char)) {
-      baseSpeed *= 2;
-    }
-    // Faster for common letters
-    else if (/[aeiou]/.test(char.toLowerCase())) {
-      baseSpeed *= 0.8;
-    }
-    // Pause after sentences
-    else if (char === '\n') {
-      baseSpeed *= 3;
-    }
-    // Slight random variation for realism
-    const variation = variableSpeed ? (Math.random() * 0.4 + 0.8) : 1;
-    
-    return Math.floor(baseSpeed * variation);
-  }, [speed, variableSpeed]);
+/**
+ * Custom hook for typewriter effect
+ * 
+ * @param text - The text to display with typewriter effect
+ * @param speed - Speed of typing in milliseconds per character (default: 50)
+ * @param delay - Initial delay before starting in milliseconds (default: 0)
+ * @param enabled - Whether the effect is enabled (default: true)
+ * @returns The current displayed text
+ */
+export function useTypewriter({
+  text,
+  speed = 50,
+  delay = 0,
+  enabled = true
+}: UseTypewriterOptions): string {
+  const [displayedText, setDisplayedText] = useState('');
+  const indexRef = useRef(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!text) return;
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-    let timeoutId: NodeJS.Timeout;
-    let currentIndex = 0;
-    setDisplayText('');
-    setIsComplete(false);
+    // If disabled, show full text immediately
+    if (!enabled) {
+      setDisplayedText(text);
+      return;
+    }
 
+    // Reset state
+    setDisplayedText('');
+    indexRef.current = 0;
+
+    // Start typing after delay
     const startTyping = () => {
-      const typeNextCharacter = () => {
-        if (currentIndex < text.length) {
-          const currentChar = text[currentIndex];
-          setDisplayText(text.slice(0, currentIndex + 1));
-          currentIndex++;
-          
-          const nextSpeed = getTypingSpeed(currentChar, currentIndex);
-          timeoutId = setTimeout(typeNextCharacter, nextSpeed);
-        } else {
-          setIsComplete(true);
-          onComplete?.();
+      const typeNextChar = () => {
+        if (indexRef.current < text.length) {
+          setDisplayedText(text.slice(0, indexRef.current + 1));
+          indexRef.current++;
+          timeoutRef.current = setTimeout(typeNextChar, speed);
         }
       };
-
-      timeoutId = setTimeout(typeNextCharacter, delay);
+      typeNextChar();
     };
 
-    startTyping();
+    timeoutRef.current = setTimeout(startTyping, delay);
 
+    // Cleanup
     return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     };
-  }, [text, delay, getTypingSpeed, onComplete]);
+  }, [text, speed, delay, enabled]);
 
-  return { displayText, isComplete };
-}
-
-// Hook for typing multiple lines with realistic pauses
-export function useMultiLineTypewriter(lines: string[], options: Omit<UseTypewriterOptions, 'text'> = {}) {
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
-  const [completedLines, setCompletedLines] = useState<string[]>([]);
-  const [isAllComplete, setIsAllComplete] = useState(false);
-
-  const currentLine = lines[currentLineIndex] || '';
-  
-  const { displayText, isComplete } = useTypewriter({
-    text: currentLine,
-    ...options,
-    onComplete: () => {
-      if (currentLineIndex < lines.length - 1) {
-        setCompletedLines(prev => [...prev, currentLine]);
-        setCurrentLineIndex(prev => prev + 1);
-      } else {
-        setCompletedLines(prev => [...prev, currentLine]);
-        setIsAllComplete(true);
-      }
-    }
-  });
-
-  // Reset when lines change
-  useEffect(() => {
-    setCurrentLineIndex(0);
-    setCompletedLines([]);
-    setIsAllComplete(false);
-  }, [lines]);
-
-  const allDisplayText = [...completedLines, displayText].join('\n');
-
-  return { 
-    displayText: allDisplayText, 
-    isComplete: isAllComplete,
-    currentLineIndex,
-    completedLines: completedLines.length
-  };
+  return displayedText;
 }

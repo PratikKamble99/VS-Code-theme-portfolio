@@ -5,12 +5,8 @@ export const portfolioData: PortfolioData = {
   about: {
     name: "Pratik Kamble",
     title: "Software Developer",
-    summary: [
-      "Software Developer with 2+ years of experience building scalable web applications and secure backend systems.",
-      "Specialized in React.js, TypeScript, Node.js, and modern web technologies with a focus on user experience and security.",
-      "Experienced in building RESTful APIs, implementing authentication systems, and working with various databases.",
-      "Passionate about creating efficient, maintainable code and exploring new technologies like AI/ML integration."
-    ]
+    summary: "Software Developer with 2+ years of experience building scalable web applications and secure backend systems. Specialized in React.js, TypeScript, Node.js, and modern web technologies with a focus on user experience and security. Experienced in building RESTful APIs, implementing authentication systems, and working with various databases. Passionate about creating efficient, maintainable code and exploring new technologies like AI/ML integration."
+    
   },
   skills: [
     {

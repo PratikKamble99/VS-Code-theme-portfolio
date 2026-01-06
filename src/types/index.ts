@@ -56,7 +56,7 @@ export interface PortfolioData {
   about: {
     name: string;
     title: string;
-    summary: string[];
+    summary: string;
     avatar?: string;
   };
   skills: Skill[];
