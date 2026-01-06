@@ -1,0 +1,1 @@
+export { AnimationProvider, useAnimationConfig } from './AnimationProvider';

@@ -1,0 +1,721 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 204, 204, 204;
+  --background-start-rgb: 30, 30, 30;
+  --background-end-rgb: 30, 30, 30;
+  
+  /* Theme CSS Variables - Default to dark theme */
+  --color-bg: #1e1e1e;
+  --color-bgSecondary: #252526;
+  --color-bgTertiary: #2d2d2d;
+  --color-text: #d4d4d4;
+  --color-textSecondary: #858585;
+  --color-textMuted: #6a6a6a;
+  --color-accent: #007acc;
+  --color-border: #3e3e3e;
+  --color-success: #4ec9b0;
+  --color-warning: #dcdcaa;
+  --color-error: #f48771;
+}
+
+/* Theme transition for smooth color changes */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+  background-color: #1e1e1e;
+  color: #cccccc;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom scrollbar for VS Code theme */
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 8px;
+  border: 2px solid #1e1e1e;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #5a5a5a;
+}
+
+/* Terminal-specific styles */
+.terminal-container {
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+}
+
+/* Smooth transitions for interactive elements */
+.terminal-entry {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.terminal-entry:hover {
+  opacity: 0.95;
+  transform: translateX(2px);
+}
+
+/* Enhanced command prompt styling */
+.command-prompt {
+  transition: all 0.2s ease;
+}
+
+.command-prompt:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0, 122, 204, 0.1);
+}
+
+/* Smooth focus transitions */
+input:focus {
+  transition: all 0.2s ease;
+}
+
+/* Enhanced loading animation */
+.loading-dots {
+  animation: loading-dots 1.5s infinite;
+}
+
+@keyframes loading-dots {
+  0%, 20% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+  80%, 100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* Pulse animation for status indicators */
+@keyframes status-pulse {
+  0%, 100% { 
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(78, 201, 176, 0.7);
+  }
+  50% { 
+    opacity: 0.8;
+    box-shadow: 0 0 0 8px rgba(78, 201, 176, 0);
+  }
+}
+
+.status-indicator {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* Enhanced terminal header */
+.terminal-header {
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+/* Improved button hover effects with smooth transitions */
+.terminal-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.terminal-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+.terminal-button:active {
+  transform: scale(0.95);
+}
+
+/* Smooth resize handle transitions */
+.resize-handle {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.resize-handle:hover {
+  background-color: #007acc;
+  box-shadow: 0 0 10px rgba(0, 122, 204, 0.5);
+}
+
+.resize-handle.active {
+  background-color: #007acc;
+  box-shadow: 0 0 15px rgba(0, 122, 204, 0.7);
+}
+
+/* Enhanced output type styling with glow effects */
+.output-success {
+  color: #4ec9b0;
+  text-shadow: 0 0 8px rgba(78, 201, 176, 0.3);
+  transition: all 0.3s ease;
+}
+
+.output-error {
+  color: #f48771;
+  text-shadow: 0 0 8px rgba(244, 135, 113, 0.3);
+  transition: all 0.3s ease;
+  animation: error-shake 0.5s ease-in-out;
+}
+
+@keyframes error-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.output-warning {
+  color: #dcdcaa;
+  text-shadow: 0 0 8px rgba(220, 220, 170, 0.3);
+  transition: all 0.3s ease;
+}
+
+.output-info {
+  color: #569cd6;
+  text-shadow: 0 0 8px rgba(86, 156, 214, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Responsive font sizes */
+@media (min-width: 475px) {
+  .terminal-container {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 640px) {
+  .terminal-container {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .terminal-container {
+    font-size: 15px;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 639px) {
+  .terminal-container {
+    padding: 0.75rem;
+  }
+  
+  .terminal-header {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .terminal-content {
+    padding-bottom: 4rem;
+  }
+  
+  /* Improve touch targets on mobile - Requirement 5.4 */
+  .terminal-entry {
+    margin-bottom: 1rem;
+  }
+  
+  /* Better text wrapping on mobile */
+  .terminal-output {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Touch-friendly button sizing - Requirement 5.4 */
+  button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  /* Optimize animations for mobile - Requirement 5.4 */
+  * {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Reduce motion for better mobile performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (max-width: 767px) {
+  input[type="text"] {
+    font-size: 16px !important;
+  }
+}
+
+/* Improve scrolling on mobile */
+@media (max-width: 639px) {
+  .terminal-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Full-screen terminal on mobile - Requirement 5.4 */
+  .terminal-panel-mobile {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 9999;
+  }
+  
+  /* Prevent body scroll when terminal is open on mobile */
+  body.terminal-open-mobile {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Enhanced text selection */
+::selection {
+  background-color: #264f78;
+  color: #cccccc;
+}
+
+::-moz-selection {
+  background-color: #264f78;
+  color: #cccccc;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus indicators */
+/* *:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+  border-radius: 2px;
+} */
+
+input:focus {
+  outline: none;
+  /* box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3); */
+}
+
+/* Performance optimizations */
+.terminal-container * {
+  will-change: auto;
+}
+
+.terminal-container .animate-cursor-blink {
+  will-change: opacity;
+}
+
+/* Improved link styling */
+a, .link-style {
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  text-decoration-color: transparent;
+}
+
+a:hover, .link-style:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Enhanced error and success states */
+.error-text {
+  animation: error-pulse 0.5s ease-in-out;
+}
+
+@keyframes error-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
+.success-text {
+  animation: success-fade-in 0.3s ease-in-out;
+}
+
+@keyframes success-fade-in {
+  0% { opacity: 0; transform: translateY(-2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced VS Code theme colors for better contrast */
+.terminal-container {
+  background: linear-gradient(135deg, #1e1e1e 0%, #1a1a1a 100%);
+}
+
+/* Subtle glow effects for interactive elements */
+.command-prompt:hover {
+  box-shadow: 0 0 8px rgba(0, 122, 204, 0.1);
+}
+
+.terminal-button:hover {
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced terminal window styling */
+.terminal-header {
+  background: linear-gradient(135deg, #252526 0%, #2d2d30 100%);
+  border-bottom: 1px solid #3e3e42;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Improved readability for code blocks */
+.terminal-output pre,
+.terminal-output code {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  padding: 2px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced mobile experience */
+@media (max-width: 639px) {
+  .terminal-container {
+    background: #1e1e1e; /* Simpler background for mobile performance */
+  }
+  
+  /* Reduce animations on mobile for better performance */
+  .terminal-entry {
+    animation: none;
+  }
+  
+  /* Optimize touch interactions */
+  .command-prompt {
+    min-height: 44px; /* iOS recommended touch target size */
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Hide settings on mobile for cleaner experience */
+  .terminal-settings {
+    display: none;
+  }
+}
+
+/* Settings panel styling */
+.settings-panel {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom checkbox styling */
+input[type="checkbox"] {
+  appearance: none;
+  background-color: #1e1e1e;
+  border: 1px solid #3e3e42;
+  border-radius: 3px;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #007acc;
+  border-color: #007acc;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+input[type="checkbox"]:focus {
+  outline: 2px solid rgba(0, 122, 204, 0.3);
+  outline-offset: 2px;
+}
+
+/* Custom select styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+select:focus {
+  outline: 2px solid rgba(0, 122, 204, 0.3);
+  outline-offset: 2px;
+}
+
+/* Command history panel animations */
+.history-panel-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.history-panel-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.history-panel-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.history-panel-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 150ms ease-in, transform 150ms ease-in;
+}
+
+/* History navigation indicators */
+.history-indicator {
+  animation: history-glow 2s ease-in-out infinite;
+}
+
+@keyframes history-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Improved command input when navigating history */
+.input-history-mode {
+  background: linear-gradient(90deg, transparent 0%, rgba(220, 220, 170, 0.1) 50%, transparent 100%);
+  animation: history-highlight 0.3s ease-out;
+}
+
+@keyframes history-highlight {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* VS Code Layout Styles */
+.vscode-layout {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.vscode-titlebar {
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.vscode-titlebar button {
+  -webkit-app-region: no-drag;
+}
+
+/* Sidebar animations */
+.sidebar-enter {
+  transform: translateX(-100%);
+}
+
+.sidebar-enter-active {
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+}
+
+.sidebar-exit {
+  transform: translateX(0);
+}
+
+.sidebar-exit-active {
+  transform: translateX(-100%);
+  transition: transform 150ms ease-in;
+}
+
+/* Tab animations */
+.tab-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.tab-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 150ms ease-out, transform 150ms ease-out;
+}
+
+.tab-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tab-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 100ms ease-in, transform 100ms ease-in;
+}
+
+/* Editor content styling */
+.editor-content {
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.editor-line-numbers {
+  color: #858585;
+  background-color: #1e1e1e;
+  border-right: 1px solid #3e3e42;
+  user-select: none;
+}
+
+/* Scrollbar styling for editor */
+.editor-content::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.editor-content::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.editor-content::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 6px;
+}
+
+.editor-content::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Split pane resizer */
+.split-pane-resizer {
+  background: #3e3e42;
+  cursor: row-resize;
+  height: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.split-pane-resizer:hover {
+  background: #007acc;
+}
+
+/* File tree styling */
+.file-tree-item {
+  transition: all 0.15s ease;
+}
+
+.file-tree-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.file-tree-item.active {
+  background-color: rgba(0, 122, 204, 0.2);
+  border-right: 2px solid #007acc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .vscode-layout .sidebar {
+    position: absolute;
+    z-index: 100;
+    height: 100%;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .vscode-layout .editor-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .vscode-layout .editor-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
