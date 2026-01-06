@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionTab } from './SectionTab';
+import { useResponsive } from '@/hooks';
 
 interface SectionTabBarProps {
   visitedSections: string[];      // Array of section IDs that have been visited
@@ -28,10 +29,10 @@ const SECTION_CONFIGS: Record<string, { id: string; label: string }> = {
  * - Clickable tabs for navigation
  * - Active tab highlighting
  * - Horizontal scrolling for overflow
- * - Responsive layout
+ * - Responsive layout (hidden on mobile < 640px)
  * - Terminal theme styling
  * 
- * Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 4.1, 4.3, 5.1, 5.2, 5.4
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 3.1, 3.3, 4.1, 4.3, 5.1, 5.2, 5.4
  */
 export const SectionTabBar: React.FC<SectionTabBarProps> = ({ 
   visitedSections, 
@@ -42,9 +43,15 @@ export const SectionTabBar: React.FC<SectionTabBarProps> = ({
 }) => {
   // Ref for the tab bar container
   const tabBarRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = useResponsive();
 
   // Do not render if no sections visited (Edge Case 1)
   if (visitedSections.length === 0) {
+    return null;
+  }
+
+  // Hide on mobile viewports (Requirement 3.1)
+  if (isMobile) {
     return null;
   }
 

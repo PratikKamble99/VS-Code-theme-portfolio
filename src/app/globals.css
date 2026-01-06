@@ -78,11 +78,15 @@ a {
   font-size: 12px;
   line-height: 1.4;
   transition: all 0.2s ease;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* Smooth transitions for interactive elements */
 .terminal-entry {
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .terminal-entry:hover {
@@ -93,6 +97,8 @@ a {
 /* Enhanced command prompt styling */
 .command-prompt {
   transition: all 0.2s ease;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .command-prompt:hover {
@@ -243,6 +249,16 @@ input:focus {
   .terminal-output {
     word-break: break-word;
     overflow-wrap: break-word;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Prevent horizontal scroll in terminal */
+  .terminal-container,
+  .terminal-panel,
+  [role="log"] {
+    overflow-x: hidden !important;
+    max-width: 100vw;
   }
   
   /* Touch-friendly button sizing - Requirement 5.4 */
@@ -717,5 +733,308 @@ select:focus {
 @layer base {
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+
+/* ============================================
+   MOBILE-FIRST RESPONSIVE ENHANCEMENTS
+   ============================================ */
+
+/* Responsive utility classes */
+.hide-mobile {
+  @apply hidden sm:block;
+}
+
+.show-mobile {
+  @apply block sm:hidden;
+}
+
+.hide-tablet {
+  @apply hidden md:block;
+}
+
+.show-tablet {
+  @apply hidden sm:block lg:hidden;
+}
+
+.hide-desktop {
+  @apply block lg:hidden;
+}
+
+.show-desktop {
+  @apply hidden lg:block;
+}
+
+/* Mobile-optimized scrollbar */
+@media (max-width: 639px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    border: 1px solid #1e1e1e;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch-friendly interactive elements */
+@media (max-width: 639px) {
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  [role="button"] {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+}
+
+/* Optimize transitions for mobile performance */
+@media (max-width: 639px) {
+  * {
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Reduce motion for better mobile performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Improve touch scrolling on mobile */
+@media (max-width: 639px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Prevent body scroll when overlays are open */
+body.overlay-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile-optimized text rendering */
+@media (max-width: 639px) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Responsive spacing utilities */
+.responsive-padding {
+  @apply p-4 sm:p-6 lg:p-8;
+}
+
+.responsive-margin {
+  @apply m-4 sm:m-6 lg:m-8;
+}
+
+.responsive-gap {
+  @apply gap-4 sm:gap-6 lg:gap-8;
+}
+
+/* Responsive text sizes */
+.responsive-text-sm {
+  @apply text-sm sm:text-base lg:text-lg;
+}
+
+.responsive-text-base {
+  @apply text-base sm:text-lg lg:text-xl;
+}
+
+.responsive-text-lg {
+  @apply text-lg sm:text-xl lg:text-2xl;
+}
+
+/* Floating action button (FAB) styles */
+.fab {
+  @apply fixed bottom-4 left-4 z-40;
+  @apply w-14 h-14 rounded-full;
+  @apply flex items-center justify-center;
+  @apply shadow-lg;
+  @apply transition-all duration-300;
+  @apply touch-manipulation;
+}
+
+.fab:hover {
+  @apply scale-110 shadow-xl;
+}
+
+.fab:active {
+  @apply scale-95;
+}
+
+/* Backdrop overlay styles */
+.backdrop-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-30;
+  @apply transition-opacity duration-300;
+}
+
+.backdrop-overlay-enter {
+  @apply opacity-0;
+}
+
+.backdrop-overlay-enter-active {
+  @apply opacity-100;
+}
+
+.backdrop-overlay-exit {
+  @apply opacity-100;
+}
+
+.backdrop-overlay-exit-active {
+  @apply opacity-0;
+}
+
+/* Mobile overlay panel styles */
+.mobile-overlay-panel {
+  @apply fixed inset-0 z-50;
+  @apply bg-vscode-bg;
+  @apply transition-transform duration-300;
+}
+
+/* Sidebar overlay animation */
+.sidebar-overlay-enter {
+  @apply -translate-x-full;
+}
+
+.sidebar-overlay-enter-active {
+  @apply translate-x-0;
+}
+
+.sidebar-overlay-exit {
+  @apply translate-x-0;
+}
+
+.sidebar-overlay-exit-active {
+  @apply -translate-x-full;
+}
+
+/* Terminal overlay animation */
+.terminal-overlay-enter {
+  @apply translate-y-full;
+}
+
+.terminal-overlay-enter-active {
+  @apply translate-y-0;
+}
+
+.terminal-overlay-exit {
+  @apply translate-y-0;
+}
+
+.terminal-overlay-exit-active {
+  @apply translate-y-full;
+}
+
+/* Responsive container */
+.responsive-container {
+  @apply w-full mx-auto;
+  @apply px-4 sm:px-6 lg:px-8;
+  @apply max-w-7xl;
+}
+
+/* Mobile-optimized focus indicators */
+@media (max-width: 639px) {
+  *:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .tablet-optimized {
+    @apply px-6 py-4;
+  }
+}
+
+/* Prevent horizontal overflow on all viewports */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure ASCII avatar doesn't cause horizontal scroll */
+.ascii-avatar-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ascii-avatar-container pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Mobile-specific ASCII avatar adjustments */
+@media (max-width: 639px) {
+  .ascii-avatar-container {
+    max-width: 100vw;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .ascii-avatar-container pre {
+    font-size: 6px !important;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  /* Ensure the inner container doesn't overflow */
+  .ascii-avatar-container > div {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+/* Responsive image handling */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-left)) {
+  .safe-area-padding {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-width: 896px) and (orientation: landscape) {
+  .landscape-mobile-adjust {
+    @apply py-2;
   }
 }

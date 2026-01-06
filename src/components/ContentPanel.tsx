@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAnimationConfig } from '@/components/providers';
 import { AboutSection, SkillsSection, ExperienceSection, ProjectsSection, ContactSection } from '@/components/sections';
 import { PortfolioData } from '@/types';
+import { useResponsive } from '@/hooks';
 
 interface ContentPanelProps {
   section: string;
@@ -18,11 +19,13 @@ interface ContentPanelProps {
  * - Section rendering based on current navigation state
  * - Animation orchestration using Framer Motion
  * - Content display with smooth transitions
+ * - Responsive padding and spacing
  * 
- * Requirements: 1.2, 1.4, 7.1
+ * Requirements: 1.1, 1.2, 7.1, 8.1
  */
 export const ContentPanel: React.FC<ContentPanelProps> = ({ section, data }) => {
   const { variants } = useAnimationConfig();
+  const { isMobile } = useResponsive();
 
   /**
    * Renders the appropriate section content based on the current section
@@ -55,7 +58,7 @@ export const ContentPanel: React.FC<ContentPanelProps> = ({ section, data }) => 
 
   return (
     <div 
-      className="flex-1 overflow-y-auto p-8"
+      className={`flex-1 overflow-y-auto ${isMobile ? 'p-4' : 'p-8'}`}
       style={{ backgroundColor: 'var(--color-bg)' }}
     >
       <AnimatePresence mode="wait">

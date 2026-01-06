@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { NavigationItem } from '@/types';
 import { useAnimationConfig } from '@/components/providers';
+import { useResponsive } from '@/hooks';
 
 interface SidebarProps {
   currentSection: string;
@@ -50,11 +51,12 @@ const navigationItems: NavigationItem[] = [
  * Sidebar navigation component with VS Code styling
  * Implements active section highlighting, hover effects, and mobile collapsible menu
  * 
- * Requirements: 1.1, 2.1, 2.2, 2.3, 2.4, 5.4, 6.1
+ * Requirements: 1.1, 1.3, 2.1, 2.2, 2.3, 2.4, 5.4, 6.1, 6.4, 8.1
  */
 export default function Sidebar({ currentSection, onNavigate, isCollapsed = false, className = '' }: SidebarProps) {
   const { variants, reducedMotion } = useAnimationConfig();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const { isMobile } = useResponsive();
 
   // Get icon SVG based on icon name
   const getIcon = (iconName: string) => {
@@ -142,9 +144,10 @@ export default function Sidebar({ currentSection, onNavigate, isCollapsed = fals
               onMouseEnter={() => setHoveredItem(item.id)}
               onMouseLeave={() => setHoveredItem(null)}
               className={`
-                w-full flex items-center gap-3 px-4 py-3 text-left
+                w-full flex items-center gap-3 px-4 text-left
                 transition-all duration-200 ease-out
                 relative group
+                ${isMobile ? 'py-4 min-h-[48px]' : 'py-3'}
                 ${isActive 
                   ? 'bg-opacity-20' 
                   : ''

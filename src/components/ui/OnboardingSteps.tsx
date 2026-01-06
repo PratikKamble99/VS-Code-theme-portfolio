@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { useResponsive } from '@/hooks';
 
 interface OnboardingStepsProps {
   isVisible: boolean;
@@ -77,6 +78,12 @@ const steps: Step[] = [
 export const OnboardingSteps: React.FC<OnboardingStepsProps> = ({ isVisible, onComplete }) => {
   const [run, setRun] = React.useState(false);
   const [currentStepIndex, setCurrentStepIndex] = React.useState(0);
+  const { isMobile } = useResponsive();
+
+  // Don't render on mobile (Requirement 5.1)
+  if (isMobile) {
+    return null;
+  }
 
   useEffect(() => {
     if (isVisible) {

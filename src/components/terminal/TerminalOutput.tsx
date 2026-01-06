@@ -176,17 +176,17 @@ export const TerminalOutput: React.FC<ExtendedTerminalOutputProps> = ({
           initial={isNew ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: isNew ? 0.3 : 0, ease: [0.4, 0, 0.2, 1] }}
-          className="font-mono text-sm"
+          className="font-mono text-sm overflow-hidden"
         >
           {legacyEntry.command && (
-            <div className="flex items-center gap-2 text-[#d4d4d4] mb-1 transition-all duration-200 hover:bg-[#2d2d2d] hover:bg-opacity-30 rounded px-1 -mx-1">
-              <span className="text-[#4ec9b0] transition-transform duration-200 hover:scale-110">➜</span>
-              <span className="text-[#569cd6] font-semibold">portfolio</span>
-              <span className="text-[#d4d4d4]">{legacyEntry.command}</span>
+            <div className="flex items-center gap-2 text-[#d4d4d4] mb-1 transition-all duration-200 hover:bg-[#2d2d2d] hover:bg-opacity-30 rounded px-1 -mx-1 overflow-hidden">
+              <span className="text-[#4ec9b0] transition-transform duration-200 hover:scale-110 flex-shrink-0">➜</span>
+              <span className="text-[#569cd6] font-semibold flex-shrink-0">portfolio</span>
+              <span className="text-[#d4d4d4] break-all">{legacyEntry.command}</span>
             </div>
           )}
           {legacyEntry.output && (
-            <div className="ml-6 whitespace-pre-wrap text-[#d4d4d4] transition-all duration-200">
+            <div className="ml-6 whitespace-pre-wrap text-[#d4d4d4] transition-all duration-200 break-words" style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
               {legacyEntry.output}
             </div>
           )}
@@ -209,10 +209,10 @@ export const TerminalOutput: React.FC<ExtendedTerminalOutputProps> = ({
       >
         {/* Command line (if exists) */}
         {entry.command && (
-          <div className="flex items-center gap-2 text-[#d4d4d4] mb-1 transition-all duration-200 hover:bg-[#2d2d2d] hover:bg-opacity-30 rounded px-1 -mx-1">
-            <span className="text-[#4ec9b0] transition-transform duration-200 group-hover:scale-110">➜</span>
-            <span className="text-[#569cd6] font-semibold">portfolio</span>
-            <span className="text-[#d4d4d4]">{entry.command}</span>
+          <div className="flex items-center gap-2 text-[#d4d4d4] mb-1 transition-all duration-200 hover:bg-[#2d2d2d] hover:bg-opacity-30 rounded px-1 -mx-1 overflow-hidden">
+            <span className="text-[#4ec9b0] transition-transform duration-200 group-hover:scale-110 flex-shrink-0">➜</span>
+            <span className="text-[#569cd6] font-semibold flex-shrink-0">portfolio</span>
+            <span className="text-[#d4d4d4] break-all">{entry.command}</span>
             {/* Requirement 6.1: Display loading indicator */}
             {entry.isLoading && renderLoadingIndicator()}
           </div>
@@ -224,14 +224,15 @@ export const TerminalOutput: React.FC<ExtendedTerminalOutputProps> = ({
             initial={isNew ? { opacity: 0, x: -5 } : { opacity: 1, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: isNew ? 0.2 : 0, delay: isNew ? 0.1 : 0 }}
-            className={`flex items-start gap-2 ml-6 p-2 rounded transition-all duration-300 hover:bg-[#2d2d2d] hover:bg-opacity-20`}
+            className={`flex items-start gap-2 ml-6 p-2 rounded transition-all duration-300 hover:bg-[#2d2d2d] hover:bg-opacity-20 overflow-hidden`}
           >
             {/* Requirement 6.4: Display icons based on type */}
             {getOutputIcon(entry.type)}
             
             {/* Requirement 6.2: Display output with appropriate styling */}
             <div 
-              className={`whitespace-pre-wrap ${getOutputColor(entry.type)} flex-1 transition-all duration-200`}
+              className={`whitespace-pre-wrap ${getOutputColor(entry.type)} flex-1 transition-all duration-200 break-words overflow-wrap-anywhere`}
+              style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
             >
               {entry.output}
             </div>
@@ -244,13 +245,15 @@ export const TerminalOutput: React.FC<ExtendedTerminalOutputProps> = ({
   return (
     <div 
       ref={outputRef}
-      className="flex-1 overflow-y-auto p-4 space-y-3 scroll-smooth transition-all duration-300"
+      className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-3 scroll-smooth transition-all duration-300"
       role="log"
       aria-live="polite"
       aria-label="Terminal output"
       style={{
         scrollbarWidth: 'thin',
-        scrollbarColor: '#424242 #1e1e1e'
+        scrollbarColor: '#424242 #1e1e1e',
+        wordBreak: 'break-word',
+        overflowWrap: 'break-word'
       }}
     >
       <AnimatePresence mode="popLayout">

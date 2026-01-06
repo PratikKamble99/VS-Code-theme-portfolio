@@ -33,11 +33,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
     >
       {/* ASCII Art Avatar - Full width for better visibility */}
       <motion.div
-        className="w-full flex justify-center"
+        className="w-full flex justify-center overflow-x-auto"
         variants={variants.scaleIn}
       >
         <AsciiAvatar
-          imageUrl={data.avatar}
+          // imageUrl={data.avatar}
           width={100}
           height={50}
           fontSize={8}
@@ -55,9 +55,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
         <h2 className="text-xl font-mono" style={{ color: 'var(--color-accent)' }}>
           {data.title}
         </h2>
-        <p className="text-xs font-mono mt-2" style={{ color: 'var(--color-textSecondary)' }}>
-          💡 Hover over the ASCII art for interactive effects
-        </p>
       </motion.div>
 
       {/* Summary section with staggered fade-in */}

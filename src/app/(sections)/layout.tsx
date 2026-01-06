@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { useRouter, usePathname } from 'next/navigation';
 import { Sidebar, Taskbar, SectionTabBar } from '@/components/layout';
 import { TerminalPanel } from '@/components/terminal';
-import { OnboardingSteps, LoadingBar } from '@/components/ui';
-import { useFullscreen, useGuideState, useVisitedSections } from '@/hooks';
+import { OnboardingSteps, LoadingBar, FloatingTerminalButton } from '@/components/ui';
+import { useFullscreen, useGuideState, useVisitedSections, useResponsive } from '@/hooks';
 import { ThemeProvider, TerminalProvider } from '@/contexts';
 import { AnimationProvider } from '@/components/providers';
 
@@ -55,11 +55,11 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
   // Fullscreen state management using custom hook
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
+  // Responsive state management using custom hook
+  const { isMobile } = useResponsive();
+
   // Track if component is mounted (for SSR compatibility)
   const [mounted, setMounted] = useState(false);
-
-  // Track mobile state for responsive behavior
-  const [isMobile, setIsMobile] = useState(false);
 
   // Ref for debouncing navigation
   const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -69,9 +69,6 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
     setMounted(true);
 
     const handleResize = () => {
-      const mobile = window.innerWidth < 640;
-      setIsMobile(mobile);
-
       // Collapse sidebar on mobile devices (< 768px)
       if (window.innerWidth < 768) {
         setIsSidebarCollapsed(true);
@@ -227,6 +224,20 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showGuide, toggleTerminal]);
 
+  // Body scroll lock when sidebar overlay is open on mobile
+  // Requirement 6.2, 11.2
+  useEffect(() => {
+    if (!isSidebarCollapsed && window.innerWidth < 768) {
+      document.body.classList.add('overlay-open');
+    } else {
+      document.body.classList.remove('overlay-open');
+    }
+
+    return () => {
+      document.body.classList.remove('overlay-open');
+    };
+  }, [isSidebarCollapsed]);
+
   // Prevent flash of unstyled content during SSR
   if (!mounted) {
     return null;
@@ -343,6 +354,13 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
                 />
               </div>
             </div>
+
+            {/* Floating Terminal Button - Mobile only */}
+            <FloatingTerminalButton
+              isVisible={isMobile}
+              isTerminalOpen={isTerminalVisible}
+              onClick={toggleTerminal}
+            />
 
             {/* Onboarding Steps */}
             <OnboardingSteps

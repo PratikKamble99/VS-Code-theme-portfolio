@@ -7,6 +7,7 @@ import { terminalConfig } from '@/config';
 import { TerminalInput } from './TerminalInput';
 import { TerminalOutput } from './TerminalOutput';
 import { useTerminal } from '@/contexts';
+import { useResponsive } from '@/hooks';
 
 /**
  * TerminalPanel - Collapsible terminal interface at the bottom of the screen
@@ -16,9 +17,9 @@ import { useTerminal } from '@/contexts';
  * - Terminal header with controls
  * - Command input and output display
  * - Keyboard shortcuts support
- * - Responsive design with mobile overlay mode
+ * - Responsive design with mobile full-screen overlay mode
  * 
- * Requirements: 1.1, 1.2, 1.3, 1.4, 5.4
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 4.4, 5.1, 5.2, 5.3, 5.4
  */
 export const TerminalPanel: React.FC<TerminalPanelProps> = ({
   isVisible,
@@ -43,20 +44,9 @@ export const TerminalPanel: React.FC<TerminalPanelProps> = ({
     executor
   } = useTerminal();
 
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile } = useResponsive();
   const [isResizing, setIsResizing] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
-
-  // Requirement 5.4: Detect mobile viewport
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Handle command submission
   const handleCommandSubmitLocal = async (command: string) => {
@@ -100,6 +90,22 @@ export const TerminalPanel: React.FC<TerminalPanelProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isVisible, onToggle, handleClear]);
+
+  // Requirement 5.2, 11.2: Body scroll lock when terminal is open on mobile
+  useEffect(() => {
+    if (isMobile && isVisible && !isMinimized) {
+      // Prevent body scroll
+      document.body.classList.add('overlay-open');
+    } else {
+      // Restore body scroll
+      document.body.classList.remove('overlay-open');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove('overlay-open');
+    };
+  }, [isMobile, isVisible, isMinimized]);
 
   // Requirement 6.5: Handle terminal resize
   useEffect(() => {
