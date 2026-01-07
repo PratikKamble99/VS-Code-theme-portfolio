@@ -873,7 +873,7 @@ body.overlay-open {
 
 /* Floating action button (FAB) styles */
 .fab {
-  @apply fixed bottom-4 left-4 z-40;
+  @apply fixed bottom-4 right-4 z-40;
   @apply w-14 h-14 rounded-full;
   @apply flex items-center justify-center;
   @apply shadow-lg;

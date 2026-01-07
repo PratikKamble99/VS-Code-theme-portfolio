@@ -80,23 +80,20 @@ export const OnboardingSteps: React.FC<OnboardingStepsProps> = ({ isVisible, onC
   const [currentStepIndex, setCurrentStepIndex] = React.useState(0);
   const { isMobile } = useResponsive();
 
-  // Don't render on mobile (Requirement 5.1)
-  if (isMobile) {
-    return null;
-  }
-
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && !isMobile) {
       // Small delay to ensure DOM is ready
       setTimeout(() => setRun(true), 300);
     } else {
       setRun(false);
       setCurrentStepIndex(0);
     }
-  }, [isVisible]);
+  }, [isVisible, isMobile]);
 
   // Add/remove focus class to current step element
   useEffect(() => {
+    if (isMobile) return;
+    
     // Remove focus class from all elements
     document.querySelectorAll('[data-tour]').forEach(el => {
       el.classList.remove('tour-focused');
@@ -119,7 +116,7 @@ export const OnboardingSteps: React.FC<OnboardingStepsProps> = ({ isVisible, onC
         el.classList.remove('tour-focused');
       });
     };
-  }, [run, currentStepIndex]);
+  }, [run, currentStepIndex, isMobile]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status, index, type } = data;
@@ -137,7 +134,10 @@ export const OnboardingSteps: React.FC<OnboardingStepsProps> = ({ isVisible, onC
     }
   };
 
-  if (!isVisible) return null;
+  // Don't render on mobile (Requirement 5.1) - moved after all hooks
+  if (isMobile || !isVisible) {
+    return null;
+  }
 
   return (
     <>

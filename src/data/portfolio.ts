@@ -6,7 +6,7 @@ export const portfolioData: PortfolioData = {
     name: "Pratik Kamble",
     title: "Software Developer",
     summary: "Software Developer with 2+ years of experience building scalable web applications and secure backend systems. Specialized in React.js, TypeScript, Node.js, and modern web technologies with a focus on user experience and security. Experienced in building RESTful APIs, implementing authentication systems, and working with various databases. Passionate about creating efficient, maintainable code and exploring new technologies like AI/ML integration."
-    
+
   },
   skills: [
     {
@@ -14,7 +14,7 @@ export const portfolioData: PortfolioData = {
       items: ["React.js", "Next.js", "TypeScript", "JavaScript", "Material UI", "Tailwind CSS", "HTML5", "CSS3", "Redux", "Zustand"]
     },
     {
-      category: "Backend", 
+      category: "Backend",
       items: ["Node.js", "Express.js", "RESTful APIs", "GraphQL", "JWT Authentication", "bcrypt", "Session Management"]
     },
     {
@@ -37,7 +37,8 @@ export const portfolioData: PortfolioData = {
       description: "Developed a secure MERN-based Multi-Factor Authentication (MFA) system with session management features, including login with 1FA/2FA, session revocation, and the ability to enable/disable 2FA. Implemented JWT-based authentication, bcrypt for password hashing, and secure token handling to enhance application security.",
       technologies: ["React", "Node.js", "MongoDB", "Tailwind CSS", "bcrypt", "speakeasy", "JWT"],
       links: {
-        github: "https://github.com/PratikKamble99/2-factor-auth-MERN"
+        github: "https://github.com/PratikKamble99/2-factor-auth-MERN",
+        demo: ""
       },
       status: "completed",
       image: "./2fa-auth.png"
@@ -56,7 +57,8 @@ export const portfolioData: PortfolioData = {
       description: "Developed an application to record and manage personal transactions. Features include authentication, adding transactions, uploading images, and data visualization with charts.",
       technologies: ["React", "express-graphql", "MongoDB", "Tailwind CSS", "Chart.js"],
       links: {
-        github: "https://github.com/PratikKamble99/expense-tracker-graphql-react"
+        github: "https://github.com/PratikKamble99/expense-tracker-graphql-react",
+        demo: "https://expense-tracker-graphql-react.onrender.com"
       },
       status: "completed",
       image: "./expenseTracker-2.png"
@@ -116,7 +118,8 @@ export const portfolioData: PortfolioData = {
       description: "Developed an interactive portfolio showcasing 3D design and animation. Implemented dynamic UI with smooth transitions, project highlights, and responsive layout using React, Tailwind, and 3D rendering libraries.",
       technologies: ["React", "Three.js", "Tailwind CSS", "3D Animation"],
       links: {
-        github: "https://github.com/PratikKamble99/3d-portfolio"
+        github: "https://github.com/PratikKamble99/3d-portfolio",
+        demo: "https://3d-portfolio-tawny-xi.vercel.app/"
       },
       status: "completed",
       image: "./3dportfolio.png"

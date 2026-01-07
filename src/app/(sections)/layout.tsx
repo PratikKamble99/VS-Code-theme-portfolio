@@ -266,7 +266,7 @@ export default function SectionsLayout({ children }: SectionsLayoutProps) {
               isTerminalMinimized={isTerminalMinimized}
               isFullscreen={isFullscreen}
               userName="Pratik Kamble"
-            />
+            /> 
 
             {/* Main layout container with sidebar and content */}
             <div className="flex flex-1 overflow-hidden">

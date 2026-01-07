@@ -224,7 +224,7 @@ export const TerminalOutput: React.FC<ExtendedTerminalOutputProps> = ({
             initial={isNew ? { opacity: 0, x: -5 } : { opacity: 1, x: 0 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: isNew ? 0.2 : 0, delay: isNew ? 0.1 : 0 }}
-            className={`flex items-start gap-2 ml-6 p-2 rounded transition-all duration-300 hover:bg-[#2d2d2d] hover:bg-opacity-20 overflow-hidden`}
+            className={`flex items-start gap-2 md:ml-6 p-2 rounded transition-all duration-300 hover:bg-[#2d2d2d] hover:bg-opacity-20 overflow-hidden`}
           >
             {/* Requirement 6.4: Display icons based on type */}
             {getOutputIcon(entry.type)}

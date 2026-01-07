@@ -18,28 +18,20 @@ interface AboutSectionProps {
  * - Fade-in animation for content
  * - Display developer name, title, and summary
  * - Optional avatar with scale animation
- * - Typewriter effect for summary text
+ * - Typewriter effect for name text
+ * - Slide-up animation for summary
  * 
  * Requirements: 3.1, 6.2, 6.3
  */
 export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
   const { variants } = useAnimationConfig();
   
-  // Typewriter effect for summary
-  const typedSummary = useTypewriter({
-    text: data.summary || '',
+  // Typewriter effect for name
+  const typedName = useTypewriter({
+    text: data.name || '',
     speed: 100,
-    delay: 500,
+    delay: 800,
     enabled: true
-  });
-
-  // Debug - remove this later
-  console.log('Typewriter:', { 
-    original: typeof data.summary === 'string' ? data.summary.substring(0, 50) + '...' : 'Not a string', 
-    typed: typeof typedSummary === 'string' ? typedSummary.substring(0, 50) + '...' : 'Not a string', 
-    lengths: { original: data.summary?.length || 0, typed: typedSummary.length },
-    dataType: typeof data.summary,
-    data: data.summary
   });
 
   return (
@@ -68,32 +60,44 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ data }) => {
         className="flex flex-col gap-2 text-center"
         variants={variants.fadeIn}
       >
-        <h1 className="text-3xl font-bold font-mono" style={{ color: 'var(--color-text)' }}>
-          {data.name}
-        </h1>
-        <h2 className="text-xl font-mono" style={{ color: 'var(--color-accent)' }}>
-          {data.title}
-        </h2>
-      </motion.div>
-
-      {/* Summary section with typewriter effect */}
-      <motion.div
-        className="flex flex-col gap-4 items-center"
-        variants={variants.staggerContainer}
-      >
-        <motion.p
-          className="font-mono text-sm leading-relaxed relative text-center max-w-4xl"
-          style={{ color: 'var(--color-text)' }}
-        >
-          {typedSummary}
-          {/* Blinking cursor */}
-          {typedSummary.length < (data.summary?.length || 0) && (
+        <h1 className="text-3xl font-bold font-mono relative" style={{ color: 'var(--color-text)' }}>
+          {typedName}
+          {/* Blinking cursor for name */}
+          {typedName.length < (data.name?.length || 0) && (
             <motion.span
-              className="inline-block w-2 h-5 ml-1 bg-[#4ec9b0] align-text-bottom"
+              className="inline-block w-2 h-8 ml-1 bg-[#4ec9b0] align-text-bottom"
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }}
             />
           )}
+        </h1>
+        <motion.h2 
+          className="text-xl font-mono" 
+          style={{ color: 'var(--color-accent)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.5 }}
+        >
+          {data.title}
+        </motion.h2>
+      </motion.div>
+
+      {/* Summary section with slide-up animation */}
+      <motion.div
+        className="flex flex-col gap-4 items-center"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.6, 
+          delay: 1.5, // Start after name typewriter is mostly done
+          ease: "easeOut" 
+        }}
+      >
+        <motion.p
+          className="font-mono text-sm leading-relaxed text-center max-w-4xl"
+          style={{ color: 'var(--color-text)' }}
+        >
+          {data.summary}
         </motion.p>
       </motion.div>
     </motion.div>

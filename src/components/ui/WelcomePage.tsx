@@ -81,7 +81,7 @@ export const WelcomePage: React.FC = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-6xl md:text-8xl font-bold tracking-tight"
+            className="text-6xl md:text-8xl font-bold tracking-tight text-center"
             style={{ 
               color: 'var(--color-text)',
               fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace"
@@ -239,6 +239,7 @@ export const WelcomePage: React.FC = () => {
               y: { duration: 2, repeat: Infinity, ease: "easeInOut" }
             }}
             className="absolute bottom-8"
+            onClick={handleExplore}
           >
             <svg 
               width="24" 
