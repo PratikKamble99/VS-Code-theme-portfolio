@@ -227,7 +227,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **Pratik Kamble**
 - GitHub: [@PratikKamble99](https://github.com/PratikKamble99)
-- LinkedIn: [Pratik Kamble](https://linkedin.com/in/pratik-kamble)
+- LinkedIn: [Pratik Kamble](https://www.linkedin.com/in/pratikpkamble/)
 
 ## 🙏 Acknowledgments
 
